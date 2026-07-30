@@ -1,0 +1,16 @@
+{
+  "name": "sih-civic-issue-system",
+  "version": "1.0.0",
+  "description": "Crowdsourced Civic Issue Reporting and Resolution System - SIH 2025",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "npm install --prefix server && npm install --prefix client --legacy-peer-deps",
+    "server": "npm run start --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm run build --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
