@@ -5,6 +5,22 @@ import Navbar from '../components/Navbar';
 import LeafletMap from '../components/LeafletMap';
 import { Camera, MapPin, Send, AlertCircle, UploadCloud } from 'lucide-react';
 
+const ALL_CATEGORIES = [
+  'Sanitation & Waste Management',
+  'Roads & Transport',
+  'Electricity & Power',
+  'Water Supply & Sewage',
+  'Forestry & Environment'
+];
+
+const CATEGORY_KEYWORDS = {
+  'Sanitation & Waste Management': ['waste', 'garbage', 'trash', 'dump', 'dustbin', 'refuse', 'sanitation', 'litter', 'smell', 'debris', 'rubbish', 'sewer'],
+  'Roads & Transport': ['road', 'pothole', 'street', 'highway', 'traffic', 'transport', 'path', 'lane', 'pavement', 'asphalt', 'tar', 'concrete', 'bridge'],
+  'Electricity & Power': ['light', 'streetlight', 'electricity', 'wire', 'power', 'cable', 'blackout', 'pole', 'transformer', 'electrical', 'bulb'],
+  'Water Supply & Sewage': ['water', 'sewage', 'drain', 'leak', 'pipeline', 'clog', 'flood', 'tap', 'gutter', 'drainage', 'supply', 'pipe'],
+  'Forestry & Environment': ['tree', 'forest', 'park', 'green', 'planting', 'branch', 'environmental', 'nature', 'leaves', 'forestry', 'soil', 'garden']
+};
+
 export default function ReportIssue() {
   const { token, API_URL, user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -32,6 +48,37 @@ export default function ReportIssue() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isGeocoding, setIsGeocoding] = useState(false);
+
+  useEffect(() => {
+    const titleLower = formData.title.toLowerCase().trim();
+    if (!titleLower) return;
+
+    const matchedCategories = ALL_CATEGORIES.filter(cat => {
+      const keywords = CATEGORY_KEYWORDS[cat];
+      return keywords.some(keyword => titleLower.includes(keyword));
+    });
+
+    if (matchedCategories.length > 0) {
+      if (!matchedCategories.includes(formData.category)) {
+        setFormData(prev => ({
+          ...prev,
+          category: matchedCategories[0]
+        }));
+      }
+    }
+  }, [formData.title]);
+
+  const filteredCategories = (() => {
+    const titleLower = formData.title.toLowerCase().trim();
+    if (!titleLower) return ALL_CATEGORIES;
+
+    const matched = ALL_CATEGORIES.filter(cat => {
+      const keywords = CATEGORY_KEYWORDS[cat];
+      return keywords.some(keyword => titleLower.includes(keyword));
+    });
+
+    return matched.length > 0 ? matched : ALL_CATEGORIES;
+  })();
 
   // Handles Leaflet coordinate selection
   const handleLocationSelect = async (lat, lng) => {
@@ -215,11 +262,9 @@ export default function ReportIssue() {
                   onChange={onChange}
                   required
                 >
-                  <option value="Sanitation & Waste Management">Sanitation & Waste Management</option>
-                  <option value="Roads & Transport">Roads & Transport</option>
-                  <option value="Electricity & Power">Electricity & Power</option>
-                  <option value="Water Supply & Sewage">Water Supply & Sewage</option>
-                  <option value="Forestry & Environment">Forestry & Environment</option>
+                  {filteredCategories.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
                 </select>
                 <div style={{
                   position: 'absolute',
