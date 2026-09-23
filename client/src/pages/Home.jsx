@@ -7,6 +7,7 @@ import { PlusCircle, Shield, AlertTriangle, CheckCircle, Compass, Users } from '
 
 export default function Home() {
   const { user, API_URL } = useContext(AuthContext);
+  const serverBaseUrl = API_URL.replace('/api', '');
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -282,7 +283,7 @@ export default function Home() {
                     <div>
                       <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 600 }}>Before</span>
                       <img 
-                        src={report.imageUrl.startsWith('/') ? `http://localhost:5000${report.imageUrl}` : report.imageUrl} 
+                        src={report.imageUrl.startsWith('/') ? `${serverBaseUrl}${report.imageUrl}` : report.imageUrl} 
                         alt="Before" 
                         style={{ width: '100%', height: '90px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} 
                       />
@@ -290,7 +291,7 @@ export default function Home() {
                     <div>
                       <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 600 }}>After</span>
                       <img 
-                        src={report.resolutionImageUrl.startsWith('/') ? `http://localhost:5000${report.resolutionImageUrl}` : report.resolutionImageUrl} 
+                        src={report.resolutionImageUrl.startsWith('/') ? `${serverBaseUrl}${report.resolutionImageUrl}` : report.resolutionImageUrl} 
                         alt="After" 
                         style={{ width: '100%', height: '90px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} 
                       />

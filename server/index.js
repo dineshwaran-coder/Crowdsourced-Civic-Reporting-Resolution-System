@@ -30,10 +30,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Port configuration
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📁 Static files served at http://localhost:${PORT}/uploads`);
-  console.log(`⚙️  Running in ${getIsFallbackMode() ? 'FALLBACK LOCAL JSON' : 'MONGODB ATLAS'} database mode.`);
-});
+// Port configuration & module export
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📁 Static files served at http://localhost:${PORT}/uploads`);
+    console.log(`⚙️  Running in ${getIsFallbackMode() ? 'FALLBACK LOCAL JSON' : 'MONGODB ATLAS'} database mode.`);
+  });
+}
+
+module.exports = app;

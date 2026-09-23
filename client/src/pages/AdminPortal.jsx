@@ -7,6 +7,7 @@ import { AlertCircle, Clock, CheckCircle, FileText, Settings, X, UploadCloud, Ch
 
 export default function AdminPortal() {
   const { user, token, API_URL } = useContext(AuthContext);
+  const serverBaseUrl = API_URL.replace('/api', '');
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState('All');
@@ -252,7 +253,7 @@ export default function AdminPortal() {
                           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                             {report.imageUrl && (
                               <img 
-                                src={report.imageUrl.startsWith('/') ? `http://localhost:5000${report.imageUrl}` : report.imageUrl} 
+                                src={report.imageUrl.startsWith('/') ? `${serverBaseUrl}${report.imageUrl}` : report.imageUrl} 
                                 alt={report.title} 
                                 style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} 
                               />

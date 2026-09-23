@@ -8,6 +8,7 @@ import { Calendar, User, MapPin, AlertCircle, ArrowLeft, CheckCircle, Clock, Pla
 export default function ReportDetail() {
   const { id } = useParams();
   const { user, token, API_URL } = useContext(AuthContext);
+  const serverBaseUrl = API_URL.replace('/api', '');
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -180,7 +181,7 @@ export default function ReportDetail() {
                 <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600, textTransform: 'uppercase' }}>Evidence Pictured</span>
                 {report.imageUrl ? (
                   <img 
-                    src={report.imageUrl.startsWith('/') ? `http://localhost:5000${report.imageUrl}` : report.imageUrl} 
+                    src={report.imageUrl.startsWith('/') ? `${serverBaseUrl}${report.imageUrl}` : report.imageUrl} 
                     alt="Evidence" 
                     style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}
                   />
@@ -195,7 +196,7 @@ export default function ReportDetail() {
                 <div className="animate-slide">
                   <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600, textTransform: 'uppercase' }}>Resolution Proof</span>
                   <img 
-                    src={report.resolutionImageUrl.startsWith('/') ? `http://localhost:5000${report.resolutionImageUrl}` : report.resolutionImageUrl} 
+                    src={report.resolutionImageUrl.startsWith('/') ? `${serverBaseUrl}${report.resolutionImageUrl}` : report.resolutionImageUrl} 
                     alt="Resolution" 
                     style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}
                   />
